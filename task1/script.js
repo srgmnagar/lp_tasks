@@ -23,19 +23,19 @@ function displayEvents(data) {
     const main = document.querySelector("main");
     data.forEach(data => {
         const card = `
-            <div data-id="${data.id}" style="justify-content: space-between;" class="card bg-gray-800 hover:scale-105 rounded-2xl p-5 flex flex-col gap-1 ">
-                <h1 class="IDC font-small text-white ">ID: ${data.id}</h1>
-                <h1 class="titleC font-medium text-lg text-gray-200 pt-1"> ${data.title} </h1>
-                <h1 class="bodyC font-medium text-gray-400 pt-1">${data.body} </h1>
-                <p class="likesC font-small pt-1 text-white">Likes: ${data.reactions.likes}</p>
-                <p class="dislikesC font-small pt-1 text-white">Dislikes: ${data.reactions.dislikes}</p>
-                <p class="viewsC font-small pt-1 text-white">Views: ${data.views}</p>
-                <p class="userIdC font-small pt-1 text-white">User ID: ${data.userId}</p>
-                <div class="py-2 font-medium pt-1 text-white flex gap-2 md:gap-4">
-                    <button data-id="${data.id}" class="update btn-primary pt-1 transition duration-300 ease-in-out bg-[#fcee52] hover:bg-[#ffd51b] text-slate-950 font-medium py-1 px-1 md:px-2 rounded">Update</button>
-                    <button data-id="${data.id}" class="delete btn-primary pt-1 transition duration-300 ease-in-out bg-[#ff1414] hover:bg-[#ff4949] text-slate-100 font-medium py-1 px-1 md:px-2 rounded">Delete</button>
-                </div>
-            </div>
+            <div data-id="${data.id}" class="card bg-gradient-to-b from-[#fff0f0] via-[#ffbfbd] to-[#ffb1d9] hover:scale-105 transition duration-300 ease-in-out rounded-2xl p-5 flex flex-col gap-1 justify-between">
+          <h1 class="IDC  font-medium text-slate-800 ">ID: ${data.id}</h1>
+          <h1 class="titleC font-medium text-lg text-blue-900 "> ${data.title} </h1>
+          <h1 class="bodyC font-medium text-slate-600 ">${data.body} </h1>
+          <p class="likesC font-medium text-blue-900">Likes: ${data.reactions.likes}</p>
+          <p class="dislikesC font-medium text-blue-900">Dislikes: ${data.reactions.dislikes}</p>
+          <p class="viewsC font-medium  text-blue-900">Views: ${data.views}</p>
+          <p class="userIdC font-medium  text-blue-900">User ID: ${data.userId}</p>
+          <div class="py-2 font-medium text-slate-900 flex gap-2 md:gap-4">
+              <button data-id="${data.id}" class="update btn-primary transition duration-300 ease-in-out bg-blue-500 hover:bg-blue-600 text-white font-medium py-1 px-2 md:px-2 rounded-lg">Update</button>
+              <button data-id="${data.id}" class="delete btn-primary transition duration-300 ease-in-out bg-[rgb(255,43,43)] hover:bg-[#ff0e0e] text-slate-100 font-medium py-1 px-2 md:px-2 rounded-lg">Delete</button>
+          </div>
+      </div>
         `;
         main.innerHTML += card;
     });

@@ -9,53 +9,55 @@
             border-color: rgba(128, 128, 128, 0.489);
         }
     </style>
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-gradient-to-r from-[#11171f] to-[#00213b]">
-    <h1 class="text-[#ffff72] font-bold text-3xl text-center p-5">
+  <body class="bg-gradient-to-r from-[#ec729c] to-[#ff337a]">
+    <h1 class="text-[#fdfdcb] font-bold text-3xl text-center p-5">
       ADD DETAILS
     </h1>
 
     <form id="postForm" class="max-w-[70vw] m-auto">
         <div class="mb-4">
-          <label for="title" class="block text-sm font-medium text-gray-400">Title</label>
-          <input type="text" id="title" name="title" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm  text-white" required>
+          <label for="title" class="block text-lg font-medium text-[#fdfdcb]">Title</label>
+          <input type="text" id="title" name="title" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm  text-white" required>
         </div>
   
         <div class="mb-4">
-          <label for="body" class="block text-sm font-medium text-gray-400">Body</label>
-          <textarea id="body" name="body" rows="4" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required></textarea>
+          <label for="body" class="block text-lg font-medium text-[#fdfdcb]">Body</label>
+          <textarea id="body" name="body" rows="4" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required></textarea>
         </div>
 
         <div class="mb-4 flex space-x-4">
           <div class="w-1/2">
-            <label for="likes" class="block text-sm font-medium text-gray-400">Likes</label>
-            <input type="number" id="likes" name="likes" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
+            <label for="likes" class="block text-lg font-medium text-[#fdfdcb]">Likes</label>
+            <input type="number" id="likes" name="likes" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
           </div>
   
           <div class="w-1/2">
-            <label for="dislikes" class="block text-sm font-medium text-gray-400">Dislikes</label>
-            <input type="number" id="dislikes" name="dislikes" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
+            <label for="dislikes" class="block text-lg font-medium text-[#fdfdcb]">Dislikes</label>
+            <input type="number" id="dislikes" name="dislikes" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
           </div>
         </div>
   
         <div class="mb-4">
-          <label for="views" class="block text-sm font-medium text-gray-400">Views</label>
-          <input type="number" id="views" name="views" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
+          <label for="views" class="block text-lg font-medium text-[#fdfdcb]">Views</label>
+          <input type="number" id="views" name="views" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
         </div>
   
         <div class="mb-4">
-          <label for="userId" class="block text-sm font-medium text-gray-400">User ID</label>
-          <input type="number" id="userId" name="userId" class=" bg-[#ffffff2f] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
+          <label for="userId" class="block text-lg font-medium text-[#fdfdcb]">User ID</label>
+          <input type="number" id="userId" name="userId" class=" bg-[#0000003b] mt-1 w-full px-3 py-2 border gray rounded-xl  sm:text-sm text-white" required>
         </div>
   
-        <button type="submit" class=" px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 transition duration-300 ease-in-out">
+        <button type="submit" class=" px-4 py-2 bg-yellow-200 text-slate-900 font-semibold rounded-md shadow-sm hover:bg-[#e7e769] transition duration-300 ease-in-out">
           Submit
         </button>
       </form>
 
-      <main  class="grid grid-cols-[1fr_1fr_1fr] sm:grid-cols-[1fr] gap-4 max-w-[80vw] mx-auto p-10">
+      <main  class="grid lg:grid-cols-[1fr_1fr_1fr] md:grid-cols-[1fr_1fr] grid-cols-[1fr] gap-4 max-w-[80vw] mx-auto p-10">
+       
       </main>
 <script src="script.js"></script>
   </body>
