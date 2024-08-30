@@ -23,7 +23,7 @@ function displayEvents(data) {
     const main = document.querySelector("main");
     data.forEach(data => {
         const card = `
-            <div data-id="${data.id}" class="card bg-gradient-to-b from-[#fff0f0] via-[#ffbfbd] to-[#ffb1d9] hover:scale-105 transition duration-300 ease-in-out rounded-2xl p-5 flex flex-col gap-1 justify-between">
+            <div data-id="${data.id}" class="card bg-gradient-to-b from-[#ffe1e1] via-[#ffbfbd] to-[#ffb1d0] hover:scale-105 transition duration-300 ease-in-out rounded-2xl p-5 flex flex-col gap-1 justify-between">
           <h1 class="IDC  font-medium text-slate-800 ">ID: ${data.id}</h1>
           <h1 class="titleC font-medium text-lg text-blue-900 "> ${data.title} </h1>
           <h1 class="bodyC font-medium text-slate-600 ">${data.body} </h1>
