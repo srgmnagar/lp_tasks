@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Don't forget to import Link
+import { Link } from 'react-router-dom'; 
 
 function Login() {
     const [form, setForm] = useState({
@@ -67,7 +67,7 @@ function Login() {
             <button
                 onClick={toggleStyle}
                 type="button"
-                className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                className="text-white bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none shadow-md dark:shadow-md dark:shadow-amber-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >
                 {btntext}
             </button>
