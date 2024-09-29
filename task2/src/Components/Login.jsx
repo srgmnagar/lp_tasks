@@ -75,7 +75,7 @@ function Login() {
 
                 <main className="flex flex-grow items-center justify-center overflow-hidden h-full">
                     <img
-                        className="w-[50%] h-full object-cover"
+                        className="w-[50%] h-full"
                         src="https://static.vecteezy.com/system/resources/previews/019/598/179/non_2x/aesthetic-brown-abstract-background-with-copy-space-area-suitable-for-poster-and-banner-vector.jpg"
                         alt=""
                     />
@@ -132,7 +132,8 @@ function Login() {
                             </button>
                         </div>
 
-                        <p className="mt-6 text-[brown] text-lg font-serif">
+                        <p
+                        style={myStyle} className="mt-6  text-lg font-serif">
                             Don't have an account?{' '}
                             <Link to="/signup" className="text-blue-500">
                                 Sign Up
