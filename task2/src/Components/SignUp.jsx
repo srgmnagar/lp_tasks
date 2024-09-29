@@ -92,7 +92,7 @@ function SignUp() {
                 <button
                     onClick={toggleStyle}
                     type="button"
-                    className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                    className="text-white bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none shadow-md dark:shadow-md dark:shadow-amber-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                 >
                     {btntext}
                 </button>
@@ -231,7 +231,7 @@ function SignUp() {
                             <input
                                 value={form.pno}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className=" w-80 bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="pno"
                                 type="number"
                             />
@@ -239,7 +239,7 @@ function SignUp() {
                         <div className="w-full md:w-auto px-3 mt-6">
                             <button
                                 type="submit"
-                                className="text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-8 py-4 text-center mb-2"
+                                className="text-white bg-[black] via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-3xl text-base px-9 py-3 text-center my-2"
                             >
                                 Sign In
                             </button>
