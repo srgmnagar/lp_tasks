@@ -1,7 +1,6 @@
-import React from "react";
-import { useState, useEffect } from "react";
-
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import React, { useState,useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignUp() {
     const [form, setForm] = useState({
@@ -14,6 +13,9 @@ function SignUp() {
         pno: "",
     });
     const [errors, setErrors] = useState({});
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [post, setPost] = React.useState(null);
+    const navigate = useNavigate();
 
     const change = (e) => {
         setForm({
@@ -56,71 +58,91 @@ function SignUp() {
 
         if (validate()) {
             alert("Sign up successful");
-        } else {
-            alert("Please fix the errors");
+        
+            axios.post("https://auth-backend-138t.onrender.com/api/v1/users/register", {
+                username: form.username,
+                fullName: form.name,
+                email: form.email,
+                password: form.pass,
+                phone: form.pno,
+                dob: form.dob
+            })
+            .then((response) => {
+                setPost(response.data); // Save the response if needed
+                navigate("/login"); // Redirect to login page after successful registration
+            })
+            .catch((error) => {
+                if (error.response) {
+                    // The request was made, and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    if (error.response.status === 400) {
+                        setErrors({ serverError: "Bad request, please check your input." });
+                    } else if (error.response.status === 409) {
+                        setErrors({ serverError: "Username or email already exists." });
+                    } else {
+                        setErrors({ serverError: "An unexpected error occurred. Please try again." });
+                    }
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    setErrors({ serverError: "No response from the server. Please check your connection." });
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    setErrors({ serverError: "An error occurred while processing the request." });
+                }
+            });
         }
+        
     };
 
-    const [myStyle, setMyStyle] = useState({
-        color: 'brown',
-        backgroundColor: '#f2d6ae'
-    })
-    const [btntext, setBtnText] = useState("Enable Dark Mode")
+    useEffect(() => {
+        const savemode=localStorage.getItem('darkMode')=='true'
+        setIsDarkMode(savemode)
+        if(savemode){
+            document.documentElement.classList.add("dark");
+        }
+        else{
+            document.documentElement.classList.remove("dark");
+        }
+    }, []);
 
     const toggleStyle = () => {
-        if (myStyle.color === 'brown') {
-            setMyStyle({
-                color: '#E5AA70',
-                backgroundColor: '#38271c'
-
-            })
-            setBtnText("Enable Light Mode")
-        }
-        else {
-            setMyStyle({
-                color: 'brown',
-                backgroundColor: '#f2d6ae'
-            })
-            setBtnText("Enable Dark Mode");
-        }
-    }
-
+        const newmode=!isDarkMode
+        setIsDarkMode(newmode); 
+        document.documentElement.classList.toggle("dark",newmode);
+        localStorage.setItem('darkMode',JSON.stringify(newmode))
+    };
 
     return (
-        <div className="h-screen flex flex-col overflow-hidden">
-            <nav className=" px-5 py-3 flex-shrink-0 flex justify-end" style={myStyle}>
+        <div className={`${isDarkMode ? 'dark' : ''} h-screen flex flex-col overflow-hidden`}>
+            <nav className="px-5 py-3 flex-shrink-0 flex justify-end bg-[#f2d6ae] dark:bg-[#38271c]">
                 <button
                     onClick={toggleStyle}
                     type="button"
-                    className="text-white bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none shadow-md dark:shadow-md dark:shadow-amber-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                    className="text-white bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none shadow-md font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                 >
-                    {btntext}
+                    {isDarkMode ? "Enable Light Mode" : "Enable Dark Mode"}
                 </button>
             </nav>
+
             <main className="flex flex-grow overflow-hidden">
                 <img
-                    className="w-[50%] "
+                    className="w-[50%]"
                     src="https://static.vecteezy.com/system/resources/previews/019/598/179/non_2x/aesthetic-brown-abstract-background-with-copy-space-area-suitable-for-poster-and-banner-vector.jpg"
                     alt=""
                 />
                 <form
-                    style={myStyle}
                     onSubmit={handleSubmit}
-                    className="w-[50%] px-16 py-10 border-t border-[#ffffff95] overflow-auto"
+                    className="w-[50%] px-16 py-10 border-t border-[#ffffff95] overflow-auto bg-[#f2d6ae] dark:bg-[#38271c] text-brown dark:text-[#E5AA70]"
                 >
                     <div className="flex flex-wrap mx-3 mb-6 justify-center items-start">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="name"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Name
                             </label>
                             <input
                                 value={form.name}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="name"
                                 type="text"
                                 placeholder="Jane"
@@ -128,36 +150,29 @@ function SignUp() {
                             {errors.name && <p className="text-red-500">{errors.name}</p>}
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="username"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Username
                             </label>
                             <input
                                 value={form.username}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="username"
                                 type="text"
                                 placeholder="Username"
                             />
                         </div>
                     </div>
+
                     <div className="flex flex-wrap mx-3 mb-6 justify-center items-start">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="pass"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Password
                             </label>
                             <input
                                 value={form.pass}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="pass"
                                 type="password"
                                 placeholder="Password"
@@ -165,17 +180,13 @@ function SignUp() {
                             {errors.pass && <p className="text-red-500">{errors.pass}</p>}
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="c_pass"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Confirm Password
                             </label>
                             <input
                                 value={form.c_pass}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="c_pass"
                                 type="password"
                                 placeholder="Confirm Password"
@@ -183,19 +194,16 @@ function SignUp() {
                             {errors.c_pass && <p className="text-red-500">{errors.c_pass}</p>}
                         </div>
                     </div>
+
                     <div className="flex flex-wrap mx-3 mb-2 justify-center items-start">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="email"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Email
                             </label>
                             <input
                                 value={form.email}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="email"
                                 type="text"
                                 placeholder="Email"
@@ -203,60 +211,50 @@ function SignUp() {
                             {errors.email && <p className="text-red-500">{errors.email}</p>}
                         </div>
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="dob"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 DOB
                             </label>
                             <input
                                 value={form.dob}
                                 onChange={change}
-                                className="bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="dob"
                                 type="date"
+                                placeholder="Date of Birth"
                             />
                         </div>
                     </div>
-                    <div className="flex flex-wrap mx-3 mb-2 justify-left gap-10">
+
+                    <div className="flex justify-between items-center mb-6">
                         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                                style={myStyle}
-                                className="block uppercase tracking-wide text-s font-bold mb-2"
-                                htmlFor="pno"
-                            >
+                            <label className="block uppercase tracking-wide text-s font-bold mb-2">
                                 Phone Number
                             </label>
                             <input
                                 value={form.pno}
                                 onChange={change}
-                                className=" w-80 bg-gray-100 text-gray-700 rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
+                                className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="pno"
-                                type="number"
+                                type="text"
+                                required
                             />
+                            {errors.pno && <p className="text-red-600">{errors.pno}</p>}
                         </div>
-                        <div className="w-full md:w-auto px-3 mt-6">
-                            <button
-                                type="submit"
-                                className="text-white bg-[black] via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-3xl text-base px-9 py-3 text-center my-2"
-                            >
-                                Sign In
-                            </button>
-                        </div>
+                        <button
+                            type="submit"
+                            className="text-white bg-gradient-to-r from-amber-700 via-amber-800 to-amber-700 hover:bg-gradient-to-br focus:ring-2 focus:outline-none shadow-md font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                        >
+                            Sign in
+                        </button>
                     </div>
-                    <p style={myStyle} className="w-full md:w-auto px-3 mt-6 mx-4 ] text-lg font-serif">
-                        Already signed up?{' '}
-                        <Link to="/login" className="text-blue-500">
-                            Login
-                        </Link>
-                    </p>
+                    <Link to="/login" className="underline">
+                        Already have an account? Log in
+                    </Link>
                 </form>
             </main>
         </div>
-
-
     );
 }
 
 export default SignUp;
+
