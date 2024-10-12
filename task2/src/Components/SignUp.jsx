@@ -68,13 +68,14 @@ function SignUp() {
                 dob: form.dob
             })
             .then((response) => {
-                setPost(response.data); // Save the response if needed
-                navigate("/login"); // Redirect to login page after successful registration
+                
+                setPost(response.data); 
+                console.log(response.data);
+                
+                navigate("/login"); 
             })
             .catch((error) => {
                 if (error.response) {
-                    // The request was made, and the server responded with a status code
-                    // that falls out of the range of 2xx
                     if (error.response.status === 400) {
                         setErrors({ serverError: "Bad request, please check your input." });
                     } else if (error.response.status === 409) {
@@ -83,10 +84,8 @@ function SignUp() {
                         setErrors({ serverError: "An unexpected error occurred. Please try again." });
                     }
                 } else if (error.request) {
-                    // The request was made but no response was received
                     setErrors({ serverError: "No response from the server. Please check your connection." });
                 } else {
-                    // Something happened in setting up the request that triggered an Error
                     setErrors({ serverError: "An error occurred while processing the request." });
                 }
             });
@@ -205,7 +204,7 @@ function SignUp() {
                                 onChange={change}
                                 className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 mb-3 focus:outline-emerald-500 focus:bg-white shadow-md"
                                 id="email"
-                                type="text"
+                                type="email"
                                 placeholder="Email"
                             />
                             {errors.email && <p className="text-red-500">{errors.email}</p>}

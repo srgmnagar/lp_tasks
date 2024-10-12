@@ -1,13 +1,27 @@
-import React, { useState ,useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useRef} from 'react';
+import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
-    const [form, setForm] = useState({
-        username: "",
-        pass: "",
-    });
-    const [errors, setErrors] = useState({});
+    // const [form, setForm] = useState({
+    //     username: "",
+    //     pass: "",
+    // });
+
+    const userRef = useRef()
+    const errRef = useRef()
+    const [user, setUser] = useState('')
+    const [pwd, setpwd] = useState('')
+    const [errors, setErrors] = useState('');
+    const [success, setSuccess] = useState('')
+    const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     userRef.current.focus()
+    // }, []);
+    useEffect(() => {
+        setErrors('')
+    }, [user, pwd]);
 
     const change = (e) => {
         setForm({
@@ -15,49 +29,59 @@ function Login() {
             [e.target.id]: e.target.value,
         });
     };
-
-    const validate = () => {
-        let formErrors = {};
-
-        const passRegex =
-            /^(?=.*[A-Z])(?=.*[a-z])(?=.*[\d])(?=.*[!@#$%^&*?_+-])[A-Za-z\d!@#$%^&*?_+-]{8,20}$/;
-        if (!passRegex.test(form.pass)) {
-            formErrors.pass =
-                "Password must be between 8-20 characters, with at least one uppercase letter, one lowercase letter, one number, and one special character.";
-        }
-        setErrors(formErrors);
-
-        return Object.keys(formErrors).length === 0;
-    };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        if (validate()) {
-            alert("Login successful");
-        } else {
-            alert("Please fix the errors");
-        }
+        axios.post("https://auth-backend-138t.onrender.com/api/v1/users/login", {
+            email: user,
+            password:pwd
+        })
+        .then((response) => {
+            
+            const { accessToken, refreshToken } = response.data;
+            // Store tokens
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            // Redirect to main page
+            setSuccess(true);
+            navigate("/main");
+        })
+        .catch((error) => {
+           if(!err?.response){
+            setErrors('No server message')
+           }
+           else if(err.response?.status==400){
+            setErrors('Missing username and pass')
+           }
+           else if(err.response?.status==401){
+            setErrors('unauthorized')
+           }
+           else{
+            setErrors('login failed')
+           }
+        });
+        setUser('')
+        setpwd('')
     };
+
 
     // Dark/Light mode state
     const [isDarkMode, setIsDarkMode] = useState(false);
     useEffect(() => {
-        const savemode=localStorage.getItem('darkMode')=='true'
+        const savemode = localStorage.getItem('darkMode') == 'true'
         setIsDarkMode(savemode)
-        if(savemode){
+        if (savemode) {
             document.documentElement.classList.add("dark");
         }
-        else{
+        else {
             document.documentElement.classList.remove("dark");
         }
     }, []);
 
     const toggleStyle = () => {
-        const newmode=!isDarkMode
-        setIsDarkMode(newmode); 
-        document.documentElement.classList.toggle("dark",newmode);
-        localStorage.setItem('darkMode',JSON.stringify(newmode))
+        const newmode = !isDarkMode
+        setIsDarkMode(newmode);
+        document.documentElement.classList.toggle("dark", newmode);
+        localStorage.setItem('darkMode', JSON.stringify(newmode))
     };
     return (
         <div className={`${isDarkMode ? 'dark' : ''} h-screen flex flex-col overflow-hidden`}>
@@ -90,12 +114,15 @@ function Login() {
                             Username
                         </label>
                         <input
-                            value={form.username}
-                            onChange={change}
+                            value={user}
+                            onChange={(e) => {
+                                setUser(e.target.value)
+                            }}
                             className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 focus:outline-emerald-500 focus:bg-white shadow-md w-full"
                             id="username"
                             type="text"
                             placeholder="Username"
+                            required
                         />
                         {errors.username && <p className="text-red-500">{errors.username}</p>}
                     </div>
@@ -108,15 +135,20 @@ function Login() {
                             Password
                         </label>
                         <input
-                            value={form.pass}
-                            onChange={change}
+                            value={pwd}
+                            onChange={(e) => {
+                                setpwd(e.target.value)
+                            }}
                             className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 focus:outline-emerald-500 focus:bg-white shadow-md w-full"
                             id="pass"
                             type="password"
                             placeholder="Password"
+                            required
                         />
                         {errors.pass && <p className="text-red-500">{errors.pass}</p>}
                     </div>
+
+                    <p className={`${errors ? "errormsg" : "offscreen"}`}>{errors}</p>
 
                     <div className="w-full md:w-auto px-3 mt-4">
                         <button
