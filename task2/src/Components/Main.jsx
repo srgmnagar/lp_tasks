@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-
+import AuthContext
+ from './AuthProvider'
 function Main() {
+  const {logout}=useContext(AuthContext);
   return (
     <div>
-      <button>Logout</button>
+      <button onClick={logout}>Logout</button>
     </div>
   )
 }

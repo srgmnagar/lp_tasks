@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef,useContext} from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from './AuthProvider'; 
 
 function Login() {
     // const [form, setForm] = useState({
     //     username: "",
     //     pass: "",
     // });
-
+    const { setAuth } = useContext(AuthContext);
     const userRef = useRef()
     const errRef = useRef()
     const [user, setUser] = useState('')
@@ -37,15 +38,17 @@ function Login() {
         })
         .then((response) => {
             
-            const { accessToken, refreshToken } = response.data;
-            // Store tokens
+            const { accessToken, refreshToken } = response.data.data;
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
+            console.log('Access Token:', localStorage.getItem('accessToken')); // Check if stored
+            console.log('Refresh Token:', localStorage.getItem('refreshToken'));
+            setAuth({accessToken,refreshToken})
             // Redirect to main page
             setSuccess(true);
             navigate("/main");
         })
-        .catch((error) => {
+        .catch((err) => {
            if(!err?.response){
             setErrors('No server message')
            }
@@ -120,12 +123,11 @@ function Login() {
                             }}
                             className="bg-gray-100 text-gray-700 dark:bg-[#4a3428] dark:text-[#E5AA70] rounded py-3 px-4 focus:outline-emerald-500 focus:bg-white shadow-md w-full"
                             id="username"
-                            type="text"
+                            type="email"
                             placeholder="Username"
                             required
                         />
-                        {errors.username && <p className="text-red-500">{errors.username}</p>}
-                    </div>
+                        </div>
 
                     <div className="w-full md:w-1/2 mb-4">
                         <label
@@ -145,10 +147,8 @@ function Login() {
                             placeholder="Password"
                             required
                         />
-                        {errors.pass && <p className="text-red-500">{errors.pass}</p>}
                     </div>
-
-                    <p className={`${errors ? "errormsg" : "offscreen"}`}>{errors}</p>
+                    {errors && <p className="text-red-500">{errors}</p>}
 
                     <div className="w-full md:w-auto px-3 mt-4">
                         <button
