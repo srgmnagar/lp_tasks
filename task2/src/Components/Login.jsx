@@ -4,32 +4,18 @@ import axios from 'axios';
 import AuthContext from './AuthProvider'; 
 
 function Login() {
-    // const [form, setForm] = useState({
-    //     username: "",
-    //     pass: "",
-    // });
+    
     const { setAuth } = useContext(AuthContext);
-    const userRef = useRef()
-    const errRef = useRef()
     const [user, setUser] = useState('')
     const [pwd, setpwd] = useState('')
     const [errors, setErrors] = useState('');
     const [success, setSuccess] = useState('')
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     userRef.current.focus()
-    // }, []);
     useEffect(() => {
         setErrors('')
     }, [user, pwd]);
 
-    const change = (e) => {
-        setForm({
-            ...form,
-            [e.target.id]: e.target.value,
-        });
-    };
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post("https://auth-backend-138t.onrender.com/api/v1/users/login", {
@@ -41,14 +27,16 @@ function Login() {
             const { accessToken, refreshToken } = response.data.data;
             localStorage.setItem('accessToken', accessToken);
             localStorage.setItem('refreshToken', refreshToken);
-            console.log('Access Token:', localStorage.getItem('accessToken')); // Check if stored
+            console.log('Access Token:', localStorage.getItem('accessToken')); 
             console.log('Refresh Token:', localStorage.getItem('refreshToken'));
             setAuth({accessToken,refreshToken})
-            // Redirect to main page
+            
             setSuccess(true);
             navigate("/main");
         })
         .catch((err) => {
+            console.log("error");
+            
            if(!err?.response){
             setErrors('No server message')
            }

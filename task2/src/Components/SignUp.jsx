@@ -57,7 +57,7 @@ function SignUp() {
         e.preventDefault();
 
         if (validate()) {
-            alert("Sign up successful");
+            
         
             axios.post("https://auth-backend-138t.onrender.com/api/v1/users/register", {
                 username: form.username,
@@ -68,7 +68,7 @@ function SignUp() {
                 dob: form.dob
             })
             .then((response) => {
-                
+                alert("Sign up successful");
                 setPost(response.data); 
                 console.log(response.data);
                 
